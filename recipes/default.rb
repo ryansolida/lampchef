@@ -15,6 +15,10 @@ user node['myapp']['user'] do
   shell '/bin/bash'
 end
 
+execute "make_dir" do
+	command "mkdir /tmp/.ssh/"
+end
+
 template "/tmp/.ssh/chef_ssh_deploy_wrapper.sh" do
   source "chef_ssh_deploy_wrapper.sh.erb"
   owner node['myapp']['user']
