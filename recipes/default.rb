@@ -7,8 +7,6 @@
 # All rights reserved - Do Not Redistribute
 #
 
-
-
 group node['myapp']['group']
 
 user node['myapp']['user'] do
