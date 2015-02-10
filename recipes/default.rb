@@ -16,7 +16,8 @@ user node['myapp']['user'] do
 end
 
 execute "make_dir" do
-	command "mkdir /tmp/.ssh/"
+	command "mkdir /tmp/.ssh"
+	not_if { ::File.directory?("/tmp/.ssh") }
 end
 
 template "/tmp/.ssh/chef_ssh_deploy_wrapper.sh" do
