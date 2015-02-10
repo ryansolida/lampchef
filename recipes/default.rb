@@ -26,13 +26,13 @@ template "/tmp/.ssh/chef_ssh_deploy_wrapper.sh" do
   mode 0770
 end
 
-template "/home/#{node['myapp']['user']}/.ssh/id_rsa.pub" do
+template "/root/.ssh/id_rsa.pub" do
   source "id_rsa.pub.erb"
   owner node['myapp']['user']
   mode 0600
 end
 
-template "/home/#{node['myapp']['user']}/.ssh/id_rsa" do
+template "/root/.ssh/id_rsa" do
   source "id_rsa.erb"
   owner node['myapp']['user']
   mode 0600
@@ -67,13 +67,13 @@ end
 ssh_known_hosts_entry 'bitbucket.org'
 ssh_known_hosts_entry 'github.com'
 
-git "/home/#{node['myapp']['user']}/git" do
+git "/root/git" do
 	repository node['git']['repo']
 	action :sync
 end
 
 execute "copy_files" do
-    command "sudo cp -R /home/#{node['myapp']['user']}/git/* /var/www/html"
+    command "sudo cp -R /root/git/* /var/www/html"
     action :run
 end
 
