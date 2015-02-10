@@ -20,22 +20,20 @@ execute "make_dir" do
 	not_if { ::File.directory?("/tmp/.ssh") }
 end
 
-template "/tmp/.ssh/chef_ssh_deploy_wrapper.sh" do
-  source "chef_ssh_deploy_wrapper.sh.erb"
-  owner node['myapp']['user']
-  mode 0770
-end
-
-template "/root/.ssh/id_rsa.pub" do
-  source "id_rsa.pub.erb"
+file "/root/.ssh/id_rsa" do
+  keys = data_bag_item('ssh', 'key')
+  content keys['private']
   owner node['myapp']['user']
   mode 0600
+  action :create
 end
 
-template "/root/.ssh/id_rsa" do
-  source "id_rsa.erb"
+file "/root/.ssh/id_rsa.pub" do
+  keys = data_bag_item('ssh', 'key')
+  content keys['public']
   owner node['myapp']['user']
-  mode 0600
+  mode 0700
+  action :create
 end
 
 user_account node['myapp']['user'] do
