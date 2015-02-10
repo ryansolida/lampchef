@@ -48,7 +48,7 @@ mysql_service 'default' do
 end
 
 execute "bitbucket_host" do
-	command "echo -e \"Host bitbucket.org\n\tStrictHostKeyChecking no\n\" >> ~/.ssh/config"
+	command "touch ~/.ssh/config &&  echo -e \"Host bitbucket.org\n\tStrictHostKeyChecking no\n\" >> ~/.ssh/config"
 end
 
 git "/home/vagrant/git" do
