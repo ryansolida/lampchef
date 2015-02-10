@@ -17,6 +17,10 @@ user node['myapp']['user'] do
   shell '/bin/bash'
 end
 
+user_account node['myapp']['user'] do
+    ssh_keygen true
+end
+
 include_recipe 'git'
 
 package 'httpd'
@@ -41,10 +45,10 @@ end
 
 ssh_known_hosts_entry 'bitbucket.org'
 
-execute "copy_ssh_keys" do
-    command "ssh-add /home/#{node['myapp']['user']}/.ssh/id_rsa"
-    action :run
-  end
+#execute "copy_ssh_keys" do
+  #  command "ssh-add /home/#{node['myapp']['user']}/.ssh/id_rsa"
+ #   action :run
+#end
 
 git "/home/#{node['myapp']['user']}/git" do
 	repository node['git']['repo']
