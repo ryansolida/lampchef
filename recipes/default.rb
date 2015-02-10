@@ -47,14 +47,17 @@ mysql_service 'default' do
   action [:create, :start]
 end
 
+execute "bitbucket_host" do
+	command "echo -e \"Host bitbucket.org\n\tStrictHostKeyChecking no\n\" >> ~/.ssh/config"
+end
+
 git "/home/vagrant/git" do
-	repository "git@github.com:angular/angular-seed.git"
-	reference "master"
+	repository "git@bitbucket.org:benlipp/git-serve-test.git"
 	action :sync
 end
 
 execute "copy_files" do
-    command "sudo cp -R /home/vagrant/git /var/www/html"
+    command "sudo cp -R /home/vagrant/git/* /var/www/html"
     action :run
   end
 
