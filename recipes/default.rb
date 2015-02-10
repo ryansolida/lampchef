@@ -47,9 +47,7 @@ mysql_service 'default' do
   action [:create, :start]
 end
 
-execute "bitbucket_host" do
-	command "touch ~/.ssh/config && echo -e \"Host bitbucket.org\n\tStrictHostKeyChecking no\n\" >> ~/.ssh/config"
-end
+ssh_known_hosts_entry 'bitbucket.org'
 
 git "/home/vagrant/git" do
 	repository "git@bitbucket.org:benlipp/git-serve-test.git"
