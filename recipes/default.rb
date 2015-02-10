@@ -21,13 +21,13 @@ template "/tmp/.ssh/chef_ssh_deploy_wrapper.sh" do
   mode 0770
 end
 
-template "/home/#{node[:base][:username]}/.ssh/id_rsa.pub" do
+template "/home/#{node['myapp']['user']}/.ssh/id_rsa.pub" do
   source "id_rsa.pub.erb"
   owner node['myapp']['user']
   mode 0600
 end
 
-template "/home/#{node[:base][:username]}/.ssh/id_rsa" do
+template "/home/#{node['myapp']['user']}/.ssh/id_rsa" do
   source "id_rsa.erb"
   owner node['myapp']['user']
   mode 0600
