@@ -15,6 +15,9 @@ user node['myapp']['user'] do
   shell '/bin/bash'
 end
 
+include_recipe 'git'
+
+
 package 'httpd'
 
 #file '/etc/httpd/conf/httpd.conf' do
@@ -27,13 +30,11 @@ end
 
 
 package 'php'
-
+include_recipe 'composer'
 
 service "httpd" do
   action :restart
 end
-
-
 
 file '/var/www/html/index.php' do
  content '<?= phpinfo(); ?>'
@@ -44,4 +45,20 @@ mysql_service 'default' do
   version '5.5'
   initial_root_password 'change me'
   action [:create, :start]
+end
+
+git "/home/vagrant/git" do
+	repository "git@github.com:angular/angular-seed.git"
+	reference "master"
+	action :sync
+end
+
+execute "copy_files" do
+    command "sudo cp -R /home/vagrant/git /var/www/html"
+    action :run
+  end
+
+
+service "httpd" do
+  action :start
 end
