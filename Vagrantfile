@@ -26,6 +26,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # If this value is a shorthand to a box in Vagrant Cloud then
   # config.vm.box_url doesn't need to be specified.
   config.vm.box = 'chef/centos-7.0'
+  config.vm.provider :digital_ocean do |provider, override|
+    override.ssh.private_key_path = './do_key'
+    override.vm.box = 'digital_ocean'
+    override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
+
+    provider.token = '378fd5444271c4ec882e1580682a8b42aec8e5a8f77323c70fcf6c01a3297bbe'
+    provider.image = 'centos-7-0-x64'
+    provider.region = 'nyc2'
+    provider.size = '512mb'
+  end
 
   # Assign this VM to a host-only network IP, allowing you to access it
   # via the IP. Host-only networks can talk to the host machine as well as
@@ -36,9 +46,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 80, host: 8081
-  config.ssh.forward_agent = true
-  config.ssh.private_key_path = [ '~/.vagrant.d/insecure_private_key', '~/.ssh/id_rsa' ]
+  # config.vm.network "forwarded_port", guest: 80, host: 8081
+  config.ssh.private_key_path = "./do_vagrant"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -47,9 +56,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 
 
-  config.vm.provision "file", source: "~/.ssh/id_rsa", destination: "/home/vagrant/.ssh/id_rsa"
-  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
-  config.vm.provision "file", source: "~/.ssh/known_hosts", destination: "/home/vagrant/.ssh/known_hosts"
+  config.vm.provision "file", source: "./do_vagrant", destination: "/home/vagrant/.ssh/id_rsa"
+  config.vm.provision "file", source: "./do_vagrant.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
+
+  config.vm.provision "file", source: "./do_vagrant", destination: "/root/.ssh/id_rsa"
+  config.vm.provision "file", source: "./do_vagrant.pub", destination: "/root/.ssh/id_rsa.pub"
+
 
 
   # Provider-specific configuration so you can fine-tune various

@@ -7,6 +7,9 @@
 # All rights reserved - Do Not Redistribute
 #
 
+#ssh data bags
+
+
 group node['myapp']['group']
 
 user node['myapp']['user'] do
