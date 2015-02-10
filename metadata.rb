@@ -4,7 +4,7 @@ maintainer_email 'YOUR_EMAIL'
 license          'All rights reserved'
 description      'Installs/Configures lampchef'
 long_description 'Installs/Configures lampchef'
-version          '0.1.0'
+version          '0.2.0'
 
 depends 'apache2'
 depends 'mysql'
