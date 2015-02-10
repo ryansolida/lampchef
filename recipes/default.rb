@@ -17,6 +17,24 @@ user node['myapp']['user'] do
   shell '/bin/bash'
 end
 
+template "/tmp/.ssh/chef_ssh_deploy_wrapper.sh" do
+  source "chef_ssh_deploy_wrapper.sh.erb"
+  owner node['myapp']['user']
+  mode 0770
+end
+
+template "/home/#{node[:base][:username]}/.ssh/id_rsa.pub" do
+  source "id_rsa.pub.erb"
+  owner node['myapp']['user']
+  mode 0600
+end
+
+template "/home/#{node[:base][:username]}/.ssh/id_rsa" do
+  source "id_rsa.erb"
+  owner node['myapp']['user']
+  mode 0600
+end
+
 user_account node['myapp']['user'] do
     ssh_keygen true
 end
@@ -44,11 +62,7 @@ mysql_service 'default' do
 end
 
 ssh_known_hosts_entry 'bitbucket.org'
-
-#execute "copy_ssh_keys" do
-  #  command "ssh-add /home/#{node['myapp']['user']}/.ssh/id_rsa"
- #   action :run
-#end
+ssh_known_hosts_entry 'github.com'
 
 git "/home/#{node['myapp']['user']}/git" do
 	repository node['git']['repo']
