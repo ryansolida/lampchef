@@ -15,6 +15,11 @@ user node['myapp']['user'] do
   shell '/bin/bash'
 end
 
+remote_file "/etc/hosts.deny" do
+  source "https://www.openbl.org/lists/base_all_ssh-only.txt"
+  action :create # see actions section below
+end
+
 execute "make_dir" do
 	command "mkdir /tmp/.ssh"
 	not_if { ::File.directory?("/tmp/.ssh") }
